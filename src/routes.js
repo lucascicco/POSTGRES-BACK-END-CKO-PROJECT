@@ -13,6 +13,7 @@ import PersonalDataController from './app/controllers/PersonalData';
 import ProductsController from './app/controllers/ProductsController';
 import PurchaseController from './app/controllers/PurchaseController';
 import FavoriteItemsController from './app/controllers/FavoriteItems';
+import ProductFeaturesController from './app/controllers/FeaturesProduct';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -26,6 +27,8 @@ import validatePersonalDataUpdate from './app/validators/PersonalDataUpdate';
 import validateLocationStore from './app/validators/LocationStore';
 import validateLocationUpdate from './app/validators/LocationUpdate';
 import validatePurchaseStore from './app/validators/PurchaseStore';
+import validateSendingFeatures from './app/validators/SendingFeatures';
+
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -77,7 +80,10 @@ routes.post('/avatar', upload.single('file'), AvatarFileController.store)
 routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem)
 routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem)
 
-
 routes.get('/frete', ProductsController.FreteCalculate)
+routes.post('/features', validateSendingFeatures, ProductFeaturesController.store)
+routes.put('/features', validateSendingFeatures, ProductFeaturesController.update)
+
+
 
 export default routes

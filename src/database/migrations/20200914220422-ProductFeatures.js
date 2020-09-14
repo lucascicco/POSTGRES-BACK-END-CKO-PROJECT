@@ -25,7 +25,7 @@ module.exports = {
         },        
         height: {
           type: Sequelize.DECIMAL,
-          allowNull: false
+          allowNull: true
         },  
         diameter : {
             type: Sequelize.DECIMAL,

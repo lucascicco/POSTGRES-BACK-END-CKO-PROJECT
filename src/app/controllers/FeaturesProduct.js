@@ -1,16 +1,17 @@
 import Product from '../models/products';
 import Features from '../models/productsfeatures';
 
-class PurchaseController{
+class FeatureSendingControlller{
     async store(req, res) {
         const productFindByPk = await Product.findByPk(req.body.product)
         
         const FeaturesItem = await Features.create({
             weight: req.body.weight,
+            height: req.body.height,
             format: req.body.format,
             length: req.body.length,
             width:  req.body.width,
-            diamater: req.body.diamater
+            diameter: req.body.diameter
         })
 
         await productFindByPk.update({
@@ -31,4 +32,4 @@ class PurchaseController{
     }
 }
 
-export default new PurchaseController()
+export default new FeatureSendingControlller()
