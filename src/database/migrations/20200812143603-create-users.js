@@ -20,6 +20,10 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
         },
+        favorite_items: {
+            type: Sequelize.ARRAY(Sequelize.INTEGER),
+            defaultValue: []
+        },
         created_at: {
             type: Sequelize.DATE,
             allowNull: false

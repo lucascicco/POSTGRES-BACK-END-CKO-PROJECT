@@ -4,7 +4,6 @@ import AvatarFile from '../models/avatarpictures';
 import Location from '../models/location';
 import PersonalData from '../models/information';
 import authConfig from '../../config/auth';
-import FavoriteItem from '../models/favoriteitems';
 
 import Queue from '../../lib/Queue';
 import WelcomeEmail from '../jobs/WelcomeEmail'
@@ -59,7 +58,7 @@ class UserController{
 
         await user.update(req.body);
 
-        const { id, name, avatar, user_location, user_personal_info, user_favorite_items } = await User.findByPk(req.userId, {
+        const { id, name, avatar, user_location, user_personal_info, favorite_items } = await User.findByPk(req.userId, {
             include: [
                 {
                     model: AvatarFile,
@@ -75,11 +74,6 @@ class UserController{
                     model: PersonalData,
                     as: 'user_personal_info',
                     attributes: ['birthday', 'gender', 'identification', 'profession', ' cellphone']
-                },
-                {
-                    model: FavoriteItem,
-                    as: 'user_favorite_items',
-                    attributes: ['favorite_array']
                 }
             ]
         })
@@ -92,7 +86,7 @@ class UserController{
                 avatar,
                 user_location,
                 user_personal_info,
-                user_favorite_items
+                favorite_items
             }})
     }
 }

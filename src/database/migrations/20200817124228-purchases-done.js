@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('purchases', {
+    return queryInterface.createTable('purchase', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -12,12 +12,12 @@ module.exports = {
             allowNull: false
         },
         product: {
-          type: Sequelize.INTEGER,
-          references: { model: 'products', key: 'id' },
-          onUpdate: 'CASCADE',
-          onDelete: 'SET NULL',
-          allowNull: false
-        },
+            type: Sequelize.INTEGER,
+            references: { model: 'products', key: 'id' },
+            onUpdate: 'CASCADE',
+            onDelete: 'SET NULL',
+            allowNull: false
+          },
         buyer: {
             type: Sequelize.INTEGER,
             references: { model: 'users', key: 'id' },
@@ -71,6 +71,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-     return queryInterface.dropTable('purchases');
+     return queryInterface.dropTable('purchase');
   }
 };

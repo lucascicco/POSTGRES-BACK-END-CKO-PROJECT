@@ -72,11 +72,11 @@ routes.put('/personal_data', validatePersonalDataUpdate, PersonalDataController.
 
 //files
 routes.post('/avatar', upload.single('file'), AvatarFileController.store)
-// routes.post('/product_image', upload.single('file'), ProductFileController.store) not in use yeT
+routes.post('/product_image', upload.single('file'), ProductFileController.store) not in use yeT
 
 //favoriteItems
-routes.post('/favoriteItems', FavoriteItemsController.AddItem)
-routes.put('/favoriteItems', FavoriteItemsController.RemoveItem)
+routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem)
+routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem)
 
 
 

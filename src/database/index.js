@@ -8,10 +8,9 @@ import ProductFile from '../app/models/productspictures';
 import Product from '../app/models/products';
 import User from '../app/models/user';
 import Location from '../app/models/location';
-import Purchase from '../app/models/purchases';
-import FavoriteItems from '../app/models/favoriteitems';
+import Purchase from '../app/models/purchase';
 
-const models = [Product, ProductFile, User, Location, AvatarFile, PersonalData, Purchase, FavoriteItems];
+const models = [Product, ProductFile, User, Location, AvatarFile, PersonalData, Purchase];
 
 class Database{
     constructor(){

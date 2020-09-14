@@ -1,4 +1,3 @@
-import FavoriteItem from '../models/favoriteitems';
 import User from '../models/user';
 import {
     DeleteItem,
@@ -8,43 +7,35 @@ import {
 class FavoriteItemsController{
     async AddItem(req, res){
         const user = await User.findByPk(req.userId)
-        
-        const favoriteID = user.dataValues.favorite_id
 
-        if(favoriteID === null){
-            const FirstFavoriteItem = await FavoriteItem.create({
-                favoriteArray: [req.body.item]
-            })
-            
+        if(user.dataValues.favorite_items.length === 0){
             await user.update({
-                favorite_id: FirstFavoriteItem.id
+                favorite_items: [req.body.item]
             })
 
-            return res.json(FirstFavoriteItem);
+            return res.json([req.body.item]);
         }else{
-            const favoriteItem = await FavoriteItem.findByPk(favoriteID)
-            const arrayOfItems = AddItemIntoArray(favoriteItem.dataValues.favoriteArray, req.body.item)
 
-            await favoriteItem.update({
-                favoriteArray: arrayOfItems
+            const arrayOfItems = AddItemIntoArray(user.dataValues.favorite_items, req.body.item)
+
+            await user.update({
+                favorite_items: arrayOfItems
             })
 
-            return res.json(favoriteItem);
+            return res.json(arrayOfItems);
         }
     }
 
     async RemoveItem(req, res){
         const user = await User.findByPk(req.userId)
-        const favoriteID = user.dataValues.favorite_id
 
-        const favoriteItem = await FavoriteItem.findByPk(favoriteID)
-        const arrayOfItems = DeleteItem(favoriteItem.dataValues.favoriteArray, req.body.item)
+        const arrayOfItems = DeleteItem(user.dataValues.favorite_items, req.body.item)
         
-        await favoriteItem.update({
-            favoriteArray: arrayOfItems
+        await user.update({
+            favorite_items: arrayOfItems
         })
 
-        return res.json(favoriteItem);
+        return res.json(arrayOfItems);
     }
 }
 

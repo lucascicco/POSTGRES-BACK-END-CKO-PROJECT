@@ -1,4 +1,4 @@
-import Purchase from '../models/purchases';
+import Purchase from '../models/purchase';
 import Product from '../models/products';
 import Location from '../models/location';
 import User from '../models/user';
@@ -42,13 +42,13 @@ class PurchaseController{
             purchase_code: randomId,
             purchase_quantity: req.body.purchase_quantity,
             buyer: req.userId,
-            seller: productFindByPk.dataValues.seller,
             product: req.body.product,
+            seller: productFindByPk.dataValues.seller,
             payment_form: req.body.payment_form,
             frete_price: req.body.frete_price,
             total_price: req.body.total_price,
             purchase_location: location
-        });
+        })
 
         return res.json(PurchaseDone);
     }

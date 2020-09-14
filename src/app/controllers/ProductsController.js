@@ -1,11 +1,12 @@
 import Product from '../models/products';
 import User from '../models/user';
-import Purchase from '../models/purchases';
+import Purchase from '../models/purchase';
 import FavoriteItem from '../models/favoriteitems';
 import ProductFile from '../models/productspictures';
 import { Op } from 'sequelize';
 
 import { SellsDone } from '../../utils/ArrayFunctions';
+
 class ProductsController{
     async store(req, res){
         const { originalname: name, filename: path } = req.file
@@ -42,7 +43,7 @@ class ProductsController{
         if(req.file){
             const { originalname: name, filename: path } = req.file
 
-            const product_picture = await ProductFile.findByPk(product.product_image)
+            const product_picture = await ProductFile.findByPk(product.dataValues.product_image)
 
             await product_picture.update({
                 name,
@@ -154,15 +155,9 @@ class ProductsController{
     }
 
     async CartOfProducts(req, res){
-        const user = await User.findByPk(req.userId, {
-           include:  [{
-                model: FavoriteItem,
-                as: 'user_favorite_items',
-                attributes: ['id', 'favorite_array']
-            }]
-        })
+        const user = await User.findByPk(req.userId)
 
-        const FavoriteArray = user.dataValues.user_favorite_items.dataValues.favorite_array
+        const FavoriteArray = user.dataValues.favorite_items
 
         const Products = await Product.findAll({
             where: {
