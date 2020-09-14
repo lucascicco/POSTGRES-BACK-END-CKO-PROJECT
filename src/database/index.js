@@ -9,8 +9,9 @@ import Product from '../app/models/products';
 import User from '../app/models/user';
 import Location from '../app/models/location';
 import Purchase from '../app/models/purchase';
+import Features from '../app/models/productsfeatures';
 
-const models = [Product, ProductFile, User, Location, AvatarFile, PersonalData, Purchase];
+const models = [Product, ProductFile, User, Location, AvatarFile, PersonalData, Purchase, Features];
 
 class Database{
     constructor(){

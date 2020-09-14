@@ -1,9 +1,11 @@
 import Product from '../models/products';
+import ProductImage from '../models/productspictures';
 import User from '../models/user';
 import Purchase from '../models/purchase';
-import FavoriteItem from '../models/favoriteitems';
 import ProductFile from '../models/productspictures';
+import Location from '../models/location';
 import { Op } from 'sequelize';
+import frete from 'frete';
 
 import { SellsDone } from '../../utils/ArrayFunctions';
 
@@ -61,13 +63,19 @@ class ProductsController{
     }
 
     async getOneProduct(req, res){
-        const product = await Product.findByPk(req.query.product_id)
+        const product = await Product.findByPk(req.query.product_id, {
+            include: [
+                {
+                    model: User ,
+                    as: 'user_seller',
+                    attributes: ['location']
+                }
+            ]
+        })
 
         if(!product){
             return res.status(400).json({ error: 'Product was not found.'})
         }
-
-
 
         return res.json(product)
     }
@@ -76,6 +84,13 @@ class ProductsController{
         const { page = 1 } = req.query
 
         const Products = await Product.findAll({
+            include: [
+                {
+                    model: ProductImage,
+                    as: 'product_image',
+                    aattributes: ['name', 'path', 'url']
+                }
+            ],
             limit: 20,
             offset: (page - 1) * 20,
         })
@@ -87,6 +102,13 @@ class ProductsController{
         const { page = 1} = req.query
 
         const Products = await Product.findAll({
+            include: [
+                {
+                    model: ProductImage,
+                    as: 'product_image',
+                    attributes: ['name', 'path', 'url']
+                }
+            ],
             where: {
                 seller: {
                     [Op.ne]: req.userId
@@ -141,7 +163,7 @@ class ProductsController{
     async DeleteProduct(req, res){
         const product = await Product.findByPk(req.body.product_id);
         
-        if(product.seller !== req.userId){
+        if(product.dataValues.seller !== req.userId){
             return res.status(400).json({ error: "You don't have permission to delete a product which is not yours." })
         }
 
@@ -159,6 +181,7 @@ class ProductsController{
 
         const FavoriteArray = user.dataValues.favorite_items
 
+        console.log(user)
         const Products = await Product.findAll({
             where: {
                 id: {
@@ -171,7 +194,40 @@ class ProductsController{
     }
 
 
-      
+    async FreteCalculate(req, res){
+        const { user_location } = await User.findByPk(req.userId,{
+            include: [
+                {
+                    model: Location,
+                    as: 'user_location',
+                    attributes: ['postcode']
+                }
+            ]
+        })
+
+        const product = await Product.findByPk(req.query.product_id)
+
+        const seller = await User.findByPk(product.dataValues.seller,{
+            include: [
+                {
+                    model: Location,
+                    as: 'user_location',
+                    attributes: ['postcode']
+                }
+            ]
+        })
+
+        
+        frete()
+            .cepOrigem(user_location.postcode)
+            .servico(frete.codigos.pac)
+            .prazo(user_location.postcode, (err, results) => {
+                const result = results
+            })
+
+        return res.json(seller.user_location.postcode)
+        
+    }
 }
 
 export default new ProductsController()

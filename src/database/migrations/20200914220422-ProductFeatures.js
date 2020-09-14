@@ -1,27 +1,34 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('product_features', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true
         },
-        name: {
+        weight: {
+            type: Sequelize.DECIMAL,
+            allowNull: false
+        },
+        format: {
             type: Sequelize.STRING,
             allowNull: false
         },
-        email:{
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
+        length:{
+            type: Sequelize.DECIMAL,
+            allowNull: true
         },
-        password_hash:{
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        favorite_items: {
-            type: Sequelize.ARRAY(Sequelize.INTEGER),
+        width: {
+            type: Sequelize.DECIMAL,
+            allowNull: true
+        },        
+        height: {
+          type: Sequelize.DECIMAL,
+          allowNull: false
+        },  
+        diameter : {
+            type: Sequelize.DECIMAL,
             allowNull: true
         },
         created_at: {
@@ -36,6 +43,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-     return queryInterface.dropTable('users');
+     return queryInterface.dropTable('product_features');
   }
 };

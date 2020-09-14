@@ -8,7 +8,7 @@ class FavoriteItemsController{
     async AddItem(req, res){
         const user = await User.findByPk(req.userId)
 
-        if(user.dataValues.favorite_items.length === 0){
+        if(user.dataValues.favorite_items === null){
             await user.update({
                 favorite_items: [req.body.item]
             })

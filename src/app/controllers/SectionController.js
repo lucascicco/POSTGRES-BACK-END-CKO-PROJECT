@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import AvatarFile from '../models/avatarpictures';
 import PersonalData  from '../models/information';
 import Location from '../models/location';
-import FavoriteItem from '../models/favoriteitems';
 
 import User from '../models/user';
 import authConfig from '../../config/auth';
@@ -28,11 +27,6 @@ class SessionController {
                     model: PersonalData,
                     as: 'user_personal_info',
                     attributes: ['birthday', 'gender', 'identification', 'profession', 'cellphone']
-                },
-                {
-                    model: FavoriteItem,
-                    as: 'user_favorite_items',
-                    attributes: ['favorite_array']
                 }
             ]
         })
