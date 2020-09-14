@@ -8,13 +8,6 @@ class Purchase extends Model{
             purchase_quantity: Sequelize.INTEGER,
             canceled_at: Sequelize.DATE,
             payment_form: Sequelize.STRING,
-            frete_price: Sequelize.DECIMAL,
-            purchase_total: {
-                type: Sequelize.VIRTUAL,
-                get() { 
-                    return this.total_price - this.frete_price
-                }
-            },
             total_price: Sequelize.DECIMAL,
         },
         {
