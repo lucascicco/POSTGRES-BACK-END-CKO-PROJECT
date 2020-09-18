@@ -1,11 +1,12 @@
 import Product from '../models/products';
 import ProductImage from '../models/productspictures';
 import User from '../models/user';
-import Purchase from '../models/purchase';
+import Purchase from '../models/purchases';
 import ProductFile from '../models/productspictures';
 import Location from '../models/location';
+import Features from '../models/productsfeatures';
 import { Op } from 'sequelize';
-import frete from 'frete';
+import { calcularPrecoPrazo }  from "correios-brasil";
 
 import { SellsDone } from '../../utils/ArrayFunctions';
 
@@ -17,7 +18,7 @@ class ProductsController{
             name,
             path
         })
-
+        
         const product = await Product.create({
             product_name:  req.body.product_name,
             category: req.body.category,
@@ -69,6 +70,11 @@ class ProductsController{
                     model: User ,
                     as: 'user_seller',
                     attributes: ['location']
+                },
+                {
+                    model: ProductImage,
+                    as: 'product_image',
+                    attributes: ['name', 'path', 'url']
                 }
             ]
         })
@@ -125,7 +131,7 @@ class ProductsController{
         const { page = 1 } = req.query
 
         const Products = await Product.findAll({
-            where: { category: req.query.category },
+            where: { category: { [Op.eq]: req.query.category } },
             limit: 20,
             offset: (page - 1) * 20,
         })
@@ -137,11 +143,7 @@ class ProductsController{
         const { page = 1} = req.query
 
         const Products = await Product.findAll({
-            where: {
-                seller: {
-                    [Op.eq]: req.userId
-                }
-            },
+            where: { seller: { [Op.eq]: req.userId } },
             limit: 20,
             offset: (page - 1) * 20
         })
@@ -153,7 +155,8 @@ class ProductsController{
                 }
             }
         })
-        
+
+
         const ProductsGeral = SellsDone(Purchases,Products)
         
         return res.json(ProductsGeral)
@@ -195,7 +198,19 @@ class ProductsController{
 
 
     async FreteCalculate(req, res){
-        const { user_location } = await User.findByPk(req.userId,{
+        const location_purchase = await Location.findByPk(req.query.locationId)
+
+        const { features_product, dataValues } = await Product.findByPk(req.query.product_id, {
+            include: [
+                {
+                    model: Features,
+                    as: 'features_product',
+                    attributes: ['weight', 'format', 'width', 'height', 'diameter',  'length']
+                }
+            ]
+        })
+
+        const { user_location } = await User.findByPk(dataValues.seller,{
             include: [
                 {
                     model: Location,
@@ -205,29 +220,29 @@ class ProductsController{
             ]
         })
 
-        const product = await Product.findByPk(req.query.product_id)
+        const { weight, format, length, height, width, diameter} = features_product.dataValues 
 
-        const seller = await User.findByPk(product.dataValues.seller,{
-            include: [
-                {
-                    model: Location,
-                    as: 'user_location',
-                    attributes: ['postcode']
-                }
-            ]
-        })
+        let args = {
+            sCepOrigem:  `${location_purchase.dataValues.postcode}`,
+            sCepDestino:  `${user_location.dataValues.postcode}`,
+            nVlPeso:  "49,5",
+            nCdFormato:  `${format}`,
+            nVlComprimento:  `${length}`,
+            nVlAltura:  `${height}`,
+            nVlLargura:  `${width}`,
+            nCdServico:  req.query.service,
+            nVlDiametro:  `${diameter}`,
+        }
 
-        
-        frete()
-            .cepOrigem(user_location.postcode)
-            .servico(frete.codigos.pac)
-            .prazo(user_location.postcode, (err, results) => {
-                const result = results
+        calcularPrecoPrazo(args).then((response) => {
+            return res.json(response)
+        }).catch((e) => {
+            return res.json({
+                error: e
             })
-
-        return res.json(seller.user_location.postcode)
-        
+        })
     }
 }
 
 export default new ProductsController()
+

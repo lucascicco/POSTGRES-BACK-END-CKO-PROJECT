@@ -8,27 +8,27 @@ module.exports = {
             primaryKey: true
         },
         weight: {
-            type: Sequelize.DECIMAL,
-            allowNull: false
-        },
-        format: {
             type: Sequelize.STRING,
             allowNull: false
         },
+        format: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
         length:{
-            type: Sequelize.DECIMAL,
+            type: Sequelize.INTEGER,
             allowNull: true
         },
         width: {
-            type: Sequelize.DECIMAL,
+            type: Sequelize.INTEGER,
             allowNull: true
         },        
         height: {
-          type: Sequelize.DECIMAL,
+          type: Sequelize.INTEGER,
           allowNull: true
         },  
         diameter : {
-            type: Sequelize.DECIMAL,
+            type: Sequelize.INTEGER,
             allowNull: true
         },
         created_at: {

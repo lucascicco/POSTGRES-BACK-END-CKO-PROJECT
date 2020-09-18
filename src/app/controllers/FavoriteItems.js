@@ -6,6 +6,7 @@ import {
 
 class FavoriteItemsController{
     async AddItem(req, res){
+        console.log('ADD item was ' + req.body.item)
         const user = await User.findByPk(req.userId)
 
         if(user.dataValues.favorite_items === null){
@@ -27,6 +28,7 @@ class FavoriteItemsController{
     }
 
     async RemoveItem(req, res){
+        console.log('REMOVE item was ' + req.body.item)
         const user = await User.findByPk(req.userId)
 
         const arrayOfItems = DeleteItem(user.dataValues.favorite_items, req.body.item)

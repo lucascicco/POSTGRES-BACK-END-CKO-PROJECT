@@ -21,8 +21,9 @@ class LocationController{
     }
 
     async update(req, res){
+        console.log('It has been called' + req.body)
         const { dataValues } = await User.findByPk(req.userId) //auth
-        
+            
         const locationItem = await Location.findByPk(dataValues.location); //locationItem
 
         await locationItem.update(req.body);

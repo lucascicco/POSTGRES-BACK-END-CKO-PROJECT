@@ -1,4 +1,4 @@
-import Purchase from '../models/purchase';
+import Purchase from '../models/purchases';
 import Product from '../models/products';
 import Location from '../models/location';
 import User from '../models/user';

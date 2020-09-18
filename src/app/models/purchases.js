@@ -9,6 +9,7 @@ class Purchase extends Model{
             canceled_at: Sequelize.DATE,
             payment_form: Sequelize.STRING,
             total_price: Sequelize.DECIMAL,
+            frete_price: Sequelize.DECIMAL
         },
         {
             sequelize,
@@ -21,6 +22,7 @@ class Purchase extends Model{
         this.belongsTo(models.User, { foreignKey: 'seller', as: 'user_seller' });
         this.belongsTo(models.Location, { foreignKey: 'purchase_location', as: 'location' });
         this.belongsTo(models.User, { foreignKey: 'buyer', as: 'user_buyer' });
+        this.belongsTo(models.Product, { foreignKey: 'product', as: 'purchase_product' });
     }
 }
 

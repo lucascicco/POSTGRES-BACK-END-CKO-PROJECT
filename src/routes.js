@@ -67,6 +67,7 @@ routes.get('/mySells', PurchaseController.GetAllPurchases_Seller)
 
 //location
 routes.post('/location',validateLocationStore, LocationController.store)
+routes.post('/location_purchase', validateLocationStore, LocationController.purchase_store)
 routes.put('/location', validateLocationUpdate, LocationController.update)
 
 //personal data
@@ -83,7 +84,5 @@ routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem)
 routes.get('/frete', ProductsController.FreteCalculate)
 routes.post('/features', validateSendingFeatures, ProductFeaturesController.store)
 routes.put('/features', validateSendingFeatures, ProductFeaturesController.update)
-
-
 
 export default routes

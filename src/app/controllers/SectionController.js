@@ -21,15 +21,16 @@ class SessionController {
                 {
                     model: Location,
                     as: 'user_location',
-                    attributes: ['postcode', 'country','state', 'city', 'neighborhood', 'street','street_number']
+                    attributes: ['id', 'postcode', 'country','state', 'city', 'neighborhood', 'street','street_number']
                 },
                 {
                     model: PersonalData,
                     as: 'user_personal_info',
-                    attributes: ['birthday', 'gender', 'identification', 'profession', 'cellphone']
+                    attributes: ['id', 'birthday', 'gender', 'identification', 'profession', 'cellphone']
                 }
             ]
         })
+
 
         if(!user){
             return res.status(401).json({ error: 'User not found.'})
@@ -39,6 +40,7 @@ class SessionController {
             return res.status(401).json({ error: 'Password does not match.'})
         }
 
+        console.log(await user.checkPassword(password))
         const { id, name, avatar , user_location, user_personal_info, favorite_items} =  user;
 
         return res.json({
