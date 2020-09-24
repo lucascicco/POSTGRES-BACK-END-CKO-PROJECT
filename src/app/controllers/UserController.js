@@ -26,6 +26,7 @@ class UserController{
 
         return res.json({
             user: {
+                id,
                 name,
                 email
             }, 

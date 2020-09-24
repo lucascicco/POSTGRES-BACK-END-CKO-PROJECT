@@ -225,7 +225,7 @@ class ProductsController{
         let args = {
             sCepOrigem:  `${location_purchase.dataValues.postcode}`,
             sCepDestino:  `${user_location.dataValues.postcode}`,
-            nVlPeso:  "49,5",
+            nVlPeso:  `${weight}`,
             nCdFormato:  `${format}`,
             nVlComprimento:  `${length}`,
             nVlAltura:  `${height}`,

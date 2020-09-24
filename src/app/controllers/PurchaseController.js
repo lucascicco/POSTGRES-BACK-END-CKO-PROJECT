@@ -101,7 +101,8 @@ class PurchaseController{
                 {
                     model: Product,
                     as: 'purchase_product',
-                    attributes: ['product_name', 'category', 'price', 'image_id']
+                    attributes: ['product_name', 'category', 'price', 'image_id'],
+                    
                 },
                 {
                     model: User,
@@ -115,6 +116,7 @@ class PurchaseController{
                 }
             ]
         })
+
 
         return res.json(PurchasesSoldBytheUser)
     }
