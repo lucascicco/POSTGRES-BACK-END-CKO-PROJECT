@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import multer from 'multer';
-import multerConfig from './config/multer';
 
 import Brute from 'express-brute';
 import BruteRedis from 'express-brute-redis';
+import multerConfig from './config/multer';
 
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SectionController';
@@ -29,60 +29,88 @@ import validateLocationUpdate from './app/validators/LocationUpdate';
 import validatePurchaseStore from './app/validators/PurchaseStore';
 import validateSendingFeatures from './app/validators/SendingFeatures';
 
+import OrderController from './app/controllers/OrderController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
 
 const bruteStore = new BruteRedis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
-})
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
 
 const bruteForce = new Brute(bruteStore);
 
-routes.post('/users', validateUserStore, UserController.store)
-routes.post('/login', validateSessionStore, SessionController.store)
+routes.post('/users', validateUserStore, UserController.store);
+routes.post('/login', validateSessionStore, SessionController.store);
 
-routes.get('/products',ProductsController.getAllProducts)
-routes.get('/productsByCategory',ProductsController.getProductsByCategory)
-routes.get('/product', ProductsController.getOneProduct)
+routes.get('/products', ProductsController.getAllProducts);
+routes.get('/productsByCategory', ProductsController.getProductsByCategory);
+routes.get('/product', ProductsController.getOneProduct);
 
-routes.use(authMiddleware)
+routes.use(authMiddleware);
 
-routes.put('/users', validateUserUpdate, UserController.update)
+routes.put('/users', validateUserUpdate, UserController.update);
 
-//Products
-routes.post('/product', upload.single('file'), validateProductStore, ProductsController.store)
-routes.put('/product', validateProductUpdate, ProductsController.update)
-routes.delete('/product', ProductsController.DeleteProduct)
-routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine)
-routes.get('/myProducts', ProductsController.getMyProducts)
-routes.get('/SomeItems', ProductsController.CartOfProducts)
+// Products
+routes.post(
+  '/product',
+  upload.single('file'),
+  validateProductStore,
+  ProductsController.store
+);
+routes.put('/product', validateProductUpdate, ProductsController.update);
+routes.delete('/product', ProductsController.DeleteProduct);
+routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine);
+routes.get('/myProducts', ProductsController.getMyProducts);
+routes.get('/SomeItems', ProductsController.CartOfProducts);
 
+// purchases
+routes.post('/createPurchase', validatePurchaseStore, PurchaseController.store);
+routes.get('/myPurchases', PurchaseController.GetAllPurchases_Buyer);
+routes.get('/mySells', PurchaseController.GetAllPurchases_Seller);
 
-//purchases
-routes.post('/createPurchase', validatePurchaseStore,  PurchaseController.store)
-routes.get('/myPurchases', PurchaseController.GetAllPurchases_Buyer)
-routes.get('/mySells', PurchaseController.GetAllPurchases_Seller)
+// location
+routes.post('/location', validateLocationStore, LocationController.store);
+routes.post(
+  '/location_purchase',
+  validateLocationStore,
+  LocationController.purchase_store
+);
+routes.put('/location', validateLocationUpdate, LocationController.update);
 
-//location
-routes.post('/location',validateLocationStore, LocationController.store)
-routes.post('/location_purchase', validateLocationStore, LocationController.purchase_store)
-routes.put('/location', validateLocationUpdate, LocationController.update)
+// personal data
+routes.post(
+  '/personal_data',
+  validatePersonalDataStore,
+  PersonalDataController.store
+);
+routes.put(
+  '/personal_data',
+  validatePersonalDataUpdate,
+  PersonalDataController.update
+);
 
-//personal data
-routes.post('/personal_data',validatePersonalDataStore, PersonalDataController.store)
-routes.put('/personal_data', validatePersonalDataUpdate, PersonalDataController.update)
+// files
+routes.post('/avatar', upload.single('file'), AvatarFileController.store);
 
-//files
-routes.post('/avatar', upload.single('file'), AvatarFileController.store)
+// favoriteItems
+routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem);
+routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem);
 
-//favoriteItems
-routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem)
-routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem)
+routes.get('/frete', ProductsController.FreteCalculate);
+routes.post(
+  '/features',
+  validateSendingFeatures,
+  ProductFeaturesController.store
+);
+routes.put(
+  '/features',
+  validateSendingFeatures,
+  ProductFeaturesController.update
+);
 
-routes.get('/frete', ProductsController.FreteCalculate)
-routes.post('/features', validateSendingFeatures, ProductFeaturesController.store)
-routes.put('/features', validateSendingFeatures, ProductFeaturesController.update)
+routes.post('/order', OrderController.store);
+routes.get('/order', OrderController.get);
 
-export default routes
+export default routes;

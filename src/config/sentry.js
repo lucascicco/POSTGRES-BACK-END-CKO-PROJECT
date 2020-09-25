@@ -1,3 +1,3 @@
 export default {
-    dns: process.env.DNS_SENTRY
-}
+  dns: process.env.DNS_SENTRY,
+};
