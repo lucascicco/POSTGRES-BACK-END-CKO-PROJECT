@@ -232,6 +232,28 @@ class ProductsController {
         });
       });
   }
+
+  async ChangeStatus(req, res) {
+    const product = await Product.findByPkg(req.body.product_id);
+
+    if (product.seller !== req.userId) {
+      return res.status(401).json({
+        error: 'You do not have permission to change this product status.',
+      });
+    }
+
+    await product.update({
+      status: req.body.status,
+    });
+
+    if (req.body.status === 'closed') {
+      await product.update({
+        paused_at: new Date(),
+      });
+    }
+
+    return res.json(product);
+  }
 }
 
 export default new ProductsController();

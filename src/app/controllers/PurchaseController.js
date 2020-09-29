@@ -67,12 +67,20 @@ class PurchaseController {
         {
           model: Product,
           as: 'purchase_product',
-          attributes: ['product_name', 'category', 'price', 'image_id'],
+          attributes: [
+            'id',
+            'product_name',
+            'category',
+            'price',
+            'url',
+            'path',
+            'status',
+          ],
         },
         {
           model: User,
           as: 'user_seller',
-          attributes: ['personal_info'],
+          attributes: ['id', 'email', 'name', 'personal_info'],
         },
         {
           model: Location,
@@ -108,12 +116,72 @@ class PurchaseController {
         {
           model: Product,
           as: 'purchase_product',
-          attributes: ['product_name', 'category', 'price', 'image_id'],
+          attributes: [
+            'id',
+            'product_name',
+            'category',
+            'price',
+            'url',
+            'path',
+            'status',
+          ],
         },
         {
           model: User,
           as: 'user_buyer',
-          attributes: ['personal_info'],
+          attributes: ['email', 'name', 'personal_info'],
+        },
+        {
+          model: Location,
+          as: 'location',
+          attributes: [
+            'postcode',
+            'country',
+            'state',
+            'city',
+            'neighborhood',
+            'street',
+            'street_number',
+          ],
+        },
+      ],
+    });
+
+    return res.json(PurchasesSoldBytheUser);
+  }
+
+  async SellsDoneByProduct(req, res) {
+    const { page = 1 } = req.query;
+
+    const PurchasesSoldBytheUser = await Purchase.findAll({
+      where: {
+        seller: {
+          [Op.eq]: req.userId,
+        },
+        product: {
+          [Op.eq]: req.query.id,
+        },
+      },
+      limit: 20,
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: Product,
+          as: 'purchase_product',
+          attributes: [
+            'id',
+            'product_name',
+            'category',
+            'price',
+            'url',
+            'path',
+            'status',
+          ],
+        },
+        {
+          model: User,
+          as: 'user_buyer',
+          attributes: ['email', 'name', 'personal_info'],
         },
         {
           model: Location,

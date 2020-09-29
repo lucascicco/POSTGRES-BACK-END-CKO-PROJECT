@@ -12,6 +12,7 @@ class FavoriteItemsController {
 
       return res.json([req.body.item]);
     }
+
     const arrayOfItems = AddItemIntoArray(
       user.dataValues.favorite_items,
       req.body.item

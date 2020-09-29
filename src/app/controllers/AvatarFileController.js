@@ -5,11 +5,6 @@ class AvatarFileController {
   async store(req, res) {
     const { originalname: name, filename: path } = req.file;
 
-    console.log({
-      message: 'IT HAS BEEN HIT',
-      FILE: req.file,
-    });
-
     const file = await AvatarFile.create({
       name,
       path,

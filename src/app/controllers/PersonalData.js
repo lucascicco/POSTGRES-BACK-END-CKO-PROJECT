@@ -25,6 +25,12 @@ class PersonalDataController {
 
     return res.json(Personal_inDatabase);
   }
+
+  async getNumber(req, res) {
+    const { cellphone } = await PersonalData.findByPk(req.query.id);
+
+    return res.json(cellphone);
+  }
 }
 
 export default new PersonalDataController();

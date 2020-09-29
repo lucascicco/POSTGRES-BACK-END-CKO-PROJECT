@@ -52,6 +52,12 @@ routes.use(authMiddleware);
 
 routes.put('/users', validateUserUpdate, UserController.update);
 
+// files
+routes.post('/avatar', upload.single('file'), AvatarFileController.store);
+
+// cellhpone
+routes.get('/cellphone', PersonalDataController.getNumber);
+
 // Products
 routes.post(
   '/product',
@@ -64,11 +70,13 @@ routes.delete('/product', ProductsController.DeleteProduct);
 routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine);
 routes.get('/myProducts', ProductsController.getMyProducts);
 routes.get('/SomeItems', ProductsController.CartOfProducts);
+routes.put('/changestatus', ProductsController.ChangeStatus);
 
 // purchases
 routes.post('/createPurchase', validatePurchaseStore, PurchaseController.store);
 routes.get('/myPurchases', PurchaseController.GetAllPurchases_Buyer);
 routes.get('/mySells', PurchaseController.GetAllPurchases_Seller);
+routes.get('/mySellsByProductId', PurchaseController.SellsDoneByProduct);
 
 // location
 routes.post('/location', validateLocationStore, LocationController.store);
@@ -90,9 +98,6 @@ routes.put(
   validatePersonalDataUpdate,
   PersonalDataController.update
 );
-
-// files
-routes.post('/avatar', upload.single('file'), AvatarFileController.store);
 
 // favoriteItems
 routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem);
