@@ -69,7 +69,7 @@ routes.put('/product', validateProductUpdate, ProductsController.update);
 routes.delete('/product', ProductsController.DeleteProduct);
 routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine);
 routes.get('/myProducts', ProductsController.getMyProducts);
-routes.get('/SomeItems', ProductsController.CartOfProducts);
+routes.get('/myCart', ProductsController.CartOfProducts);
 routes.put('/changestatus', ProductsController.ChangeStatus);
 
 // purchases

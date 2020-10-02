@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import StatusIdGenerator from '../../utils/status_id';
 
 class Product extends Model {
   static init(sequelize) {
@@ -10,6 +11,12 @@ class Product extends Model {
         quantity: Sequelize.INTEGER,
         description: Sequelize.STRING,
         status: Sequelize.STRING,
+        status_id: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return StatusIdGenerator(this.status);
+          },
+        },
         paused_at: Sequelize.DATE,
         purchasable: {
           type: Sequelize.VIRTUAL,

@@ -36,16 +36,12 @@ class ProductsController {
       });
     }
 
-    if (req.file) {
-      const { originalname: name, filename: path } = req.file;
-
-      await product.update({
-        name,
-        path,
-      });
-    }
-
-    await product.update(req.body);
+    await product.update({
+      quantity: req.body.quantity,
+      price: req.body.price,
+      description: req.body.description,
+      status: req.body.quantity === 0 ? 'soldout' : 'open',
+    });
 
     const product_Updated = await Product.findByPk(req.body.product_id);
 
@@ -90,6 +86,9 @@ class ProductsController {
       where: {
         seller: {
           [Op.ne]: req.userId,
+        },
+        status: {
+          [Op.eq]: 'open',
         },
       },
       limit: 20,
@@ -161,6 +160,9 @@ class ProductsController {
       where: {
         id: {
           [Op.in]: FavoriteArray,
+        },
+        status: {
+          [Op.or]: ['open', 'soldout'],
         },
       },
     });
@@ -234,7 +236,7 @@ class ProductsController {
   }
 
   async ChangeStatus(req, res) {
-    const product = await Product.findByPkg(req.body.product_id);
+    const product = await Product.findByPk(req.body.product_id);
 
     if (product.seller !== req.userId) {
       return res.status(401).json({

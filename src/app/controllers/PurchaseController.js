@@ -35,6 +35,11 @@ class PurchaseController {
       quantity: availableQuantity - req.body.purchase_quantity,
     });
 
+    if (productFindByPk.dataValues.quantity === 0) {
+      productFindByPk.update({
+        status: 'soldout',
+      });
+    }
     const randomId = uuidv4();
 
     const PurchaseDone = await Purchase.create({

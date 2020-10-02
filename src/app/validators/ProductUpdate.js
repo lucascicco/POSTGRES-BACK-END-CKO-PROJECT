@@ -4,8 +4,6 @@ export default async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       product_id: Yup.number().required(),
-      product_name: Yup.string(),
-      category: Yup.string(),
       price: Yup.number(),
       quantity: Yup.number(),
       description: Yup.string(),
