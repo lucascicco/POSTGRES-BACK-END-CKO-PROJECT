@@ -155,7 +155,10 @@ class ProductsController {
 
     const FavoriteArray = user.dataValues.favorite_items;
 
-    console.log(user);
+    if (FavoriteArray === null || FavoriteArray.length === 0) {
+      return res.json([]);
+    }
+
     const Products = await Product.findAll({
       where: {
         id: {
