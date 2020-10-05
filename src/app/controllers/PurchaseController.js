@@ -3,7 +3,12 @@ import { Op } from 'sequelize';
 import Purchase from '../models/purchases';
 import Product from '../models/products';
 import Location from '../models/location';
+import PersonalData from '../models/information';
 import User from '../models/user';
+
+import PurchaseEmail from '../jobs/PurchaseEmail';
+import Queue from '../../lib/Queue';
+import Email from '../../lib/Mail';
 
 class PurchaseController {
   async store(req, res) {
@@ -40,6 +45,19 @@ class PurchaseController {
         status: 'soldout',
       });
     }
+
+    const seller = await User.findByPk(productFindByPk.dataValues.seller, {
+      include: [
+        {
+          model: PersonalData,
+          as: 'user_personal_info',
+          attributes: ['cellphone'],
+        },
+      ],
+    });
+
+    console.log(seller);
+
     const randomId = uuidv4();
 
     const PurchaseDone = await Purchase.create({
@@ -54,7 +72,41 @@ class PurchaseController {
       purchase_location: location,
     });
 
-    return res.json(PurchaseDone);
+    // await Email.sendMail({
+    //   to: `${Buyer_Profile.dataValues.name} <${Buyer_Profile.dataValues.email}>`,
+    //   subject: `C-KO PEDIDO #${randomId}`,
+    //   template: 'purchase',
+    //   context: {
+    //     name: Buyer_Profile.dataValues.name,
+    //     email: Buyer_Profile.dataValues.email,
+    //     price: req.body.total_price,
+    //     freteDate: req.body.freteEstimate,
+    //     purchaseCode: randomId,
+    //     sellerEmail: seller.dataValues.email,
+    //     sellerName: seller.dataValues.name,
+    //     cellpone: seller.dataValues.user_personal_info.dataValues.cellphone,
+    //   },
+    // });
+
+    // await Queue.add(PurchaseEmail.key, {
+    //   name: Buyer_Profile.dataValues.name,
+    //   email: Buyer_Profile.dataValues.email,
+    //   price: req.body.total_price,
+    //   freteDate: req.body.freteEstimate,
+    //   purchaseCode: randomId,
+    //   sellerEmail: seller.dataValues.email,
+    //   sellerName: seller.dataValues.name,
+    //   cellphone: seller.dataValues.personal_info.cellphone,
+    // });
+
+    return res.json({
+      purchase: PurchaseDone,
+      seller_info: {
+        name: seller.dataValues.name,
+        cellphone: seller.dataValues.user_personal_info.dataValues.cellphone,
+        email: seller.dataValues.email,
+      },
+    });
   }
 
   async GetAllPurchases_Buyer(req, res) {

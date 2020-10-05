@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
       },
       category: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       seller: {
@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
       quantity: {

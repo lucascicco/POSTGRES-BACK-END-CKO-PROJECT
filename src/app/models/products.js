@@ -7,7 +7,12 @@ class Product extends Model {
       {
         product_name: Sequelize.STRING,
         category: Sequelize.STRING,
-        price: Sequelize.DECIMAL,
+        price: {
+          type: Sequelize.DECIMAL,
+          get() {
+            return parseFloat(this.getDataValue('price'));
+          },
+        },
         quantity: Sequelize.INTEGER,
         description: Sequelize.STRING,
         status: Sequelize.STRING,
@@ -46,12 +51,6 @@ class Product extends Model {
     this.belongsTo(models.ProductFeatures, {
       foreignKey: 'features',
       as: 'features_product',
-    });
-
-    this.belongsToMany(models.Order, {
-      through: 'order_items',
-      as: 'orders',
-      foreignKey: 'ProductId',
     });
   }
 }

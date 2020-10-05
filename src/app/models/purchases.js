@@ -8,8 +8,18 @@ class Purchase extends Model {
         purchase_quantity: Sequelize.INTEGER,
         canceled_at: Sequelize.DATE,
         payment_form: Sequelize.STRING,
-        total_price: Sequelize.DECIMAL,
-        frete_price: Sequelize.DECIMAL,
+        total_price: {
+          type: Sequelize.DECIMAL,
+          get() {
+            return parseFloat(this.getDataValue('total_price'));
+          },
+        },
+        frete_price: {
+          type: Sequelize.DECIMAL,
+          get() {
+            return parseFloat(this.getDataValue('frete_price'));
+          },
+        },
       },
       {
         sequelize,

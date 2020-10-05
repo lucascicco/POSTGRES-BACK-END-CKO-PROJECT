@@ -44,7 +44,7 @@ module.exports = {
         allowNull: false,
       },
       total_price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
       payment_form: {
@@ -52,7 +52,7 @@ module.exports = {
         allowNull: false,
       },
       frete_price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
       canceled_at: {

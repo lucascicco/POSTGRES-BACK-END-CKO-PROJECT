@@ -1,38 +1,33 @@
 import Mail from '../../lib/Mail';
 
-class PurchaseEmail {
+class MessageToBuyer {
   get key() {
-    return 'PurchaseEmail';
+    return 'MessageToBuyer';
   }
 
   async handle({ data }) {
     const {
       name,
       email,
-      price,
-      freteDate,
       purchaseCode,
       sellerEmail,
       sellerName,
-      cellpone,
+      message,
     } = data;
 
     await Mail.sendMail({
       to: `${name} <${email}>`,
-      subject: `C-KO PEDIDO #${purchaseCode}`,
-      template: 'purchase',
+      subject: `#${purchaseCode} - RECADO`,
+      template: 'messagestob',
       context: {
         name,
-        email,
-        price,
-        freteDate,
         purchaseCode,
         sellerEmail,
         sellerName,
-        cellpone,
+        message,
       },
     });
   }
 }
 
-export default new PurchaseEmail();
+export default new MessageToBuyer();

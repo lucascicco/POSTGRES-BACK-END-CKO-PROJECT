@@ -9,7 +9,6 @@ import User from '../app/models/user';
 import Location from '../app/models/location';
 import Purchases from '../app/models/purchases';
 import ProductFeatures from '../app/models/productsfeatures';
-import Order from '../app/models/order';
 
 const models = [
   Product,
@@ -19,7 +18,6 @@ const models = [
   PersonalData,
   Purchases,
   ProductFeatures,
-  Order,
 ];
 
 class Database {

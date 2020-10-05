@@ -29,7 +29,7 @@ import validateLocationUpdate from './app/validators/LocationUpdate';
 import validatePurchaseStore from './app/validators/PurchaseStore';
 import validateSendingFeatures from './app/validators/SendingFeatures';
 
-import OrderController from './app/controllers/OrderController';
+import MessageController from './app/controllers/MessagesEmail';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -115,7 +115,8 @@ routes.put(
   ProductFeaturesController.update
 );
 
-routes.post('/order', OrderController.store);
-routes.get('/order', OrderController.get);
+// sending email
+routes.post('/sendingEmailSeller', MessageController.sendMessageSeller);
+routes.post('/sendingEmailBuyer', MessageController.sendMessageBuyer);
 
 export default routes;

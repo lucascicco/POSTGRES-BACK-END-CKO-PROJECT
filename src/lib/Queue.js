@@ -1,9 +1,10 @@
 import Bee from 'bee-queue';
-import WelcomeEmail from '../app/jobs/WelcomeEmail';
 import PurchaseEmail from '../app/jobs/PurchaseEmail';
+import MessageToSeller from '../app/jobs/MessageToSeller';
+import MessageToBuyer from '../app/jobs/MessageToBuyer';
 import redisConfig from '../config/redis';
 
-const jobs = [WelcomeEmail, PurchaseEmail];
+const jobs = [MessageToSeller, MessageToBuyer, PurchaseEmail];
 
 class Queue {
   constructor() {

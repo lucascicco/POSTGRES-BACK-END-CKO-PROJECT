@@ -5,9 +5,6 @@ import Location from '../models/location';
 import PersonalData from '../models/information';
 import authConfig from '../../config/auth';
 
-import Queue from '../../lib/Queue';
-import WelcomeEmail from '../jobs/WelcomeEmail';
-
 class UserController {
   async store(req, res) {
     const userExists = await User.findOne({ where: { email: req.body.email } });
@@ -19,8 +16,6 @@ class UserController {
     }
 
     const { id, name, email } = await User.create(req.body);
-
-    await Queue.add(WelcomeEmail.key, {});
 
     return res.json({
       user: {

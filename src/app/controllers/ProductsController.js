@@ -251,6 +251,12 @@ class ProductsController {
       status: req.body.status,
     });
 
+    if (req.body.status === 'open') {
+      await product.update({
+        paused_at: null,
+      });
+    }
+
     if (req.body.status === 'closed') {
       await product.update({
         paused_at: new Date(),
