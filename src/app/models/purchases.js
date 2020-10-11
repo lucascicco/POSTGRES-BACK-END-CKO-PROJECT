@@ -8,6 +8,7 @@ class Purchase extends Model {
         purchase_quantity: Sequelize.INTEGER,
         canceled_at: Sequelize.DATE,
         payment_form: Sequelize.STRING,
+        deliver_date: Sequelize.DATE,
         total_price: {
           type: Sequelize.DECIMAL,
           get() {

@@ -71,6 +71,7 @@ routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine);
 routes.get('/myProducts', ProductsController.getMyProducts);
 routes.get('/myCart', ProductsController.CartOfProducts);
 routes.put('/changestatus', ProductsController.ChangeStatus);
+routes.get('/allowcreateproduct', ProductsController.CreateNewProductYesNo);
 
 // purchases
 routes.post('/createPurchase', validatePurchaseStore, PurchaseController.store);

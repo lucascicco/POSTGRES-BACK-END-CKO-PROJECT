@@ -19,6 +19,7 @@ class ProductsController {
       seller: req.userId,
       quantity: req.body.quantity,
       description: req.body.description,
+      features: req.body.features,
       name,
       path,
     });
@@ -69,19 +70,12 @@ class ProductsController {
   }
 
   async getAllProducts(req, res) {
-    const { page = 1 } = req.query;
-
-    const Products = await Product.findAll({
-      limit: 20,
-      offset: (page - 1) * 20,
-    });
+    const Products = await Product.findAll();
 
     return res.json(Products);
   }
 
   async getAllProductsExceptMine(req, res) {
-    const { page = 1 } = req.query;
-
     const Products = await Product.findAll({
       where: {
         seller: {
@@ -91,32 +85,22 @@ class ProductsController {
           [Op.eq]: 'open',
         },
       },
-      limit: 20,
-      offset: (page - 1) * 20,
     });
 
     return res.json(Products);
   }
 
   async getProductsByCategory(req, res) {
-    const { page = 1 } = req.query;
-
     const Products = await Product.findAll({
       where: { category: { [Op.eq]: req.query.category } },
-      limit: 20,
-      offset: (page - 1) * 20,
     });
 
     return res.json(Products);
   }
 
   async getMyProducts(req, res) {
-    const { page = 1 } = req.query;
-
     const Products = await Product.findAll({
       where: { seller: { [Op.eq]: req.userId } },
-      limit: 20,
-      offset: (page - 1) * 20,
     });
 
     const Purchases = await Purchase.findAll({
@@ -264,6 +248,20 @@ class ProductsController {
     }
 
     return res.json(product);
+  }
+
+  async CreateNewProductYesNo(req, res) {
+    const myProducts = await Product.findAll({
+      where: {
+        seller: { [Op.eq]: req.userId },
+        status: { [Op.or]: ['open', 'soldout', 'closed'] },
+      },
+    });
+
+    return res.json({
+      allow: !(myProducts.length > 19),
+      quantity: myProducts.length,
+    });
   }
 }
 

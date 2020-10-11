@@ -56,8 +56,6 @@ class PurchaseController {
       ],
     });
 
-    console.log(seller);
-
     const randomId = uuidv4();
 
     const PurchaseDone = await Purchase.create({
@@ -70,34 +68,24 @@ class PurchaseController {
       frete_price: req.body.frete_price,
       total_price: req.body.total_price,
       purchase_location: location,
+      deliver_date: req.body.frete_date,
     });
 
-    // await Email.sendMail({
-    //   to: `${Buyer_Profile.dataValues.name} <${Buyer_Profile.dataValues.email}>`,
-    //   subject: `C-KO PEDIDO #${randomId}`,
-    //   template: 'purchase',
-    //   context: {
-    //     name: Buyer_Profile.dataValues.name,
-    //     email: Buyer_Profile.dataValues.email,
-    //     price: req.body.total_price,
-    //     freteDate: req.body.freteEstimate,
-    //     purchaseCode: randomId,
-    //     sellerEmail: seller.dataValues.email,
-    //     sellerName: seller.dataValues.name,
-    //     cellpone: seller.dataValues.user_personal_info.dataValues.cellphone,
-    //   },
-    // });
-
-    // await Queue.add(PurchaseEmail.key, {
-    //   name: Buyer_Profile.dataValues.name,
-    //   email: Buyer_Profile.dataValues.email,
-    //   price: req.body.total_price,
-    //   freteDate: req.body.freteEstimate,
-    //   purchaseCode: randomId,
-    //   sellerEmail: seller.dataValues.email,
-    //   sellerName: seller.dataValues.name,
-    //   cellphone: seller.dataValues.personal_info.cellphone,
-    // });
+    await Email.sendMail({
+      to: `${Buyer_Profile.dataValues.name} <${Buyer_Profile.dataValues.email}>`,
+      subject: `C-KO PEDIDO #${randomId}`,
+      template: 'purchase',
+      context: {
+        name: Buyer_Profile.dataValues.name,
+        email: Buyer_Profile.dataValues.email,
+        price: req.body.total_price,
+        freteDate: req.body.freteEstimate,
+        purchaseCode: randomId,
+        sellerEmail: seller.dataValues.email,
+        sellerName: seller.dataValues.name,
+        cellpone: seller.dataValues.user_personal_info.dataValues.cellphone,
+      },
+    });
 
     return res.json({
       purchase: PurchaseDone,
@@ -110,16 +98,12 @@ class PurchaseController {
   }
 
   async GetAllPurchases_Buyer(req, res) {
-    const { page = 1 } = req.query;
-
     const PurchasesBoughtBytheUser = await Purchase.findAll({
       where: {
         buyer: {
           [Op.eq]: req.userId,
         },
       },
-      limit: 20,
-      offset: (page - 1) * 20,
       include: [
         {
           model: Product,
@@ -159,16 +143,12 @@ class PurchaseController {
   }
 
   async GetAllPurchases_Seller(req, res) {
-    const { page = 1 } = req.query;
-
     const PurchasesSoldBytheUser = await Purchase.findAll({
       where: {
         seller: {
           [Op.eq]: req.userId,
         },
       },
-      limit: 20,
-      offset: (page - 1) * 20,
       include: [
         {
           model: Product,

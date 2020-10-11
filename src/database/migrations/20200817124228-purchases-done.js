@@ -55,6 +55,10 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
+      deliver_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
       canceled_at: {
         type: Sequelize.DATE,
         allowNull: true,

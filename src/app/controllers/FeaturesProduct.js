@@ -3,8 +3,6 @@ import Features from '../models/productsfeatures';
 
 class FeatureSendingControlller {
   async store(req, res) {
-    const productFindByPk = await Product.findByPk(req.body.product);
-
     const FeaturesItem = await Features.create({
       weight: req.body.weight,
       height: req.body.height,
@@ -12,10 +10,6 @@ class FeatureSendingControlller {
       length: req.body.length,
       width: req.body.width,
       diameter: req.body.diameter,
-    });
-
-    await productFindByPk.update({
-      features: FeaturesItem.id,
     });
 
     return res.json(FeaturesItem);
