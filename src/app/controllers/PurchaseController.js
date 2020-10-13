@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize';
+import { format } from 'date-fns';
 import Purchase from '../models/purchases';
 import Product from '../models/products';
 import Location from '../models/location';
@@ -69,6 +70,13 @@ class PurchaseController {
       deliver_date: req.body.frete_date,
     });
 
+    const product_price = req.body.total_price.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    const formattedDate = format(new Date(req.body.frete_price), 'dd/MM/yyyy');
+
     await Email.sendMail({
       to: `${Buyer_Profile.dataValues.name} <${Buyer_Profile.dataValues.email}>`,
       subject: `C-KO PEDIDO #${randomId}`,
@@ -76,12 +84,12 @@ class PurchaseController {
       context: {
         name: Buyer_Profile.dataValues.name,
         email: Buyer_Profile.dataValues.email,
-        price: req.body.total_price,
-        freteDate: req.body.freteEstimate,
+        price: product_price,
+        freteDate: formattedDate,
         purchaseCode: randomId,
         sellerEmail: seller.dataValues.email,
         sellerName: seller.dataValues.name,
-        cellpone: seller.dataValues.user_personal_info.dataValues.cellphone,
+        cellphone: seller.dataValues.user_personal_info.dataValues.cellphone,
       },
     });
 
