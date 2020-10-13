@@ -1,4 +1,6 @@
+/* eslint-disable prettier/prettier */
 import Email from '../../lib/Mail';
+import User from '../models/user';
 
 class MessagesEmail {
   async sendMessageSeller(req, res) {
@@ -6,12 +8,11 @@ class MessagesEmail {
       name,
       email,
       purchaseCode,
-      buyerName,
-      buyerEmail,
       message,
     } = req.body;
 
-    console.log(req.body);
+    const user = await User.findByPk(req.userId);
+
     await Email.sendMail({
       to: `${name} <${email}>`,
       subject: `#${purchaseCode} - RECADO`,
@@ -20,8 +21,8 @@ class MessagesEmail {
         name,
         email,
         purchaseCode,
-        buyerName,
-        buyerEmail,
+        buyerName: user.dataValues.name,
+        buyerEmail: user.dataValues.email,
         message,
       },
     });
@@ -36,10 +37,10 @@ class MessagesEmail {
       name,
       email,
       purchaseCode,
-      sellerEmail,
-      sellerName,
       message,
     } = req.body;
+
+    const user = await User.findByPk(req.userId);
 
     await Email.sendMail({
       to: `${name} <${email}>`,
@@ -49,8 +50,8 @@ class MessagesEmail {
         name,
         email,
         purchaseCode,
-        sellerEmail,
-        sellerName,
+        sellerEmail: user.dataValues.email,
+        sellerName: user.dataValues.name,
         message,
       },
     });

@@ -87,7 +87,7 @@ class UserController {
             'gender',
             'identification',
             'profession',
-            ' cellphone',
+            'cellphone',
           ],
         },
       ],

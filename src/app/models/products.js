@@ -5,8 +5,13 @@ class Product extends Model {
   static init(sequelize) {
     super.init(
       {
-        product_name: Sequelize.STRING,
-        category: Sequelize.STRING,
+        product_name: {
+          type: Sequelize.STRING,
+          get() {
+            return this.getDataValue('product_name').toUpperCase();
+          },
+        },
+        category: Sequelize.NUMBER,
         price: {
           type: Sequelize.DECIMAL,
           get() {

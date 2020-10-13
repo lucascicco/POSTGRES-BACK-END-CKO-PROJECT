@@ -48,6 +48,9 @@ routes.get('/products', ProductsController.getAllProducts);
 routes.get('/productsByCategory', ProductsController.getProductsByCategory);
 routes.get('/product', ProductsController.getOneProduct);
 
+// cep validation
+routes.get('/checkingCep', LocationController.checkingCep);
+
 routes.use(authMiddleware);
 
 routes.put('/users', validateUserUpdate, UserController.update);
@@ -110,6 +113,7 @@ routes.post(
   validateSendingFeatures,
   ProductFeaturesController.store
 );
+
 routes.put(
   '/features',
   validateSendingFeatures,

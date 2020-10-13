@@ -1,3 +1,4 @@
+import cep from 'cep-promise';
 import Location from '../models/location';
 import User from '../models/user';
 
@@ -28,6 +29,16 @@ class LocationController {
     await locationItem.update(req.body);
 
     return res.json(locationItem);
+  }
+
+  async checkingCep(req, res) {
+    cep(req.query.postcode)
+      .then(() => {
+        return res.json(true);
+      })
+      .catch(() => {
+        return res.json(false);
+      });
   }
 }
 

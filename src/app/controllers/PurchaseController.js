@@ -6,8 +6,6 @@ import Location from '../models/location';
 import PersonalData from '../models/information';
 import User from '../models/user';
 
-import PurchaseEmail from '../jobs/PurchaseEmail';
-import Queue from '../../lib/Queue';
 import Email from '../../lib/Mail';
 
 class PurchaseController {

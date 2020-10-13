@@ -5,7 +5,7 @@ export default async (req, res, next) => {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
+      oldPassword: Yup.string(),
       password: Yup.string()
         .min(6)
         .when('oldPassword', (oldPassword, field) => {
