@@ -68,6 +68,8 @@ routes.post(
   validateProductStore,
   ProductsController.store
 );
+
+routes.get('/verifierProduct', ProductsController.getOneProductTinyDetail);
 routes.put('/product', validateProductUpdate, ProductsController.update);
 routes.delete('/product', ProductsController.DeleteProduct);
 routes.get('/productsExceptMine', ProductsController.getAllProductsExceptMine);
@@ -106,6 +108,7 @@ routes.put(
 // favoriteItems
 routes.put('/Add_favoriteitem', FavoriteItemsController.AddItem);
 routes.put('/Remove_favoriteitem', FavoriteItemsController.RemoveItem);
+routes.get('/getfavoriteitems', FavoriteItemsController.GetArray);
 
 routes.get('/frete', ProductsController.FreteCalculate);
 routes.post(

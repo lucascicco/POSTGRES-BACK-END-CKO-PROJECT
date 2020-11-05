@@ -4,14 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "set NODE_ENV=development&&nodemon src/server.js",
     "queue": "nodemon src/queue.js",
     "pretest": "set NODE_ENV=test&&sequelize db:migrate",
-    "test": "set NODE_ENV=test&&jest",
-    "posttest": "set NODE_ENV=test&&sequelize db:migrate:undo:all"
+    "run-tests": "set NODE_ENV=test&&jest",
+    "run-after-tests": "set NODE_ENV=test&& sequelize db:migrate:undo:all",
+    "test": "npm-run-all run-tests run-after-tests --continue-on-error"
   },
   "dependencies": {
     "@sentry/node": "5.20.1",
+    "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.3",
     "cep-promise": "^4.0.2",
@@ -50,8 +52,11 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "factory-girl": "^5.0.4",
+    "faker": "^5.1.0",
     "jest": "^26.5.3",
     "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.0",

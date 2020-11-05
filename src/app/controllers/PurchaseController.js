@@ -19,13 +19,14 @@ class PurchaseController {
 
     if (availableQuantity === 0) {
       return res.status(400).json({
-        error: 'Please, try later. The product has sold out.',
+        error: 'soldout',
       });
     }
 
     if (req.body.purchase_quantity > availableQuantity) {
       return res.status(400).json({
-        error: `Sorry... the quantity available has just changed to ${availableQuantity}.`,
+        error: 'available',
+        available: availableQuantity,
       });
     }
 

@@ -13,6 +13,10 @@ class FavoriteItemsController {
       return res.json([req.body.item]);
     }
 
+    if ([...user.dataValues.favorite_items].includes(req.body.item)) {
+      return res.json(user.dataValues.favorite_items);
+    }
+
     const arrayOfItems = AddItemIntoArray(
       user.dataValues.favorite_items,
       req.body.item
@@ -26,7 +30,6 @@ class FavoriteItemsController {
   }
 
   async RemoveItem(req, res) {
-    console.log(`REMOVE item was ${req.body.item}`);
     const user = await User.findByPk(req.userId);
 
     const arrayOfItems = DeleteItem(
@@ -39,6 +42,12 @@ class FavoriteItemsController {
     });
 
     return res.json(arrayOfItems);
+  }
+
+  async GetArray(req, res) {
+    const user = await User.findByPk(req.userId);
+
+    return res.json(user.dataValues.favorite_items);
   }
 }
 

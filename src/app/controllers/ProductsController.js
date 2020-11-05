@@ -62,11 +62,36 @@ class ProductsController {
       ],
     });
 
+    const howManyPurchases = await Purchase.findAll({
+      where: {
+        product: {
+          [Op.eq]: req.query.product_id,
+        },
+      },
+    });
+
+    const quantitySold = howManyPurchases.reduce((total, purchase) => {
+      return total + purchase.dataValues.purchase_quantity;
+    }, 0);
+
     if (!product) {
       return res.status(400).json({ error: 'Product was not found.' });
     }
 
-    return res.json(product);
+    return res.json({
+      product,
+      sellsDone: quantitySold,
+    });
+  }
+
+  async getOneProductTinyDetail(req, res) {
+    const product = await Product.findByPk(req.query.product_id);
+
+    return res.json({
+      allow:
+        product.dataValues.seller !== req.userId &&
+        product.dataValues.status === 'open',
+    });
   }
 
   async getAllProducts(req, res) {
