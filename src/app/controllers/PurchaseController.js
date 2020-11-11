@@ -146,7 +146,22 @@ class PurchaseController {
       ],
     });
 
-    return res.json(PurchasesBoughtBytheUser);
+    const promises = PurchasesBoughtBytheUser.map((item) => {
+      return PersonalData.findByPk(
+        item.dataValues.user_seller.dataValues.personal_info
+      ).then((response) => {
+        item.dataValues.user_seller.dataValues.cellphone = response.getDataValue(
+          'cellphone'
+        );
+        return item;
+      });
+    });
+
+    const result = await Promise.all(promises).then((x) => {
+      return x;
+    });
+
+    return res.json(result);
   }
 
   async GetAllPurchases_Seller(req, res) {
@@ -191,7 +206,22 @@ class PurchaseController {
       ],
     });
 
-    return res.json(PurchasesSoldBytheUser);
+    const promises = PurchasesSoldBytheUser.map((item) => {
+      return PersonalData.findByPk(
+        item.dataValues.user_buyer.dataValues.personal_info
+      ).then((response) => {
+        item.dataValues.user_buyer.dataValues.cellphone = response.getDataValue(
+          'cellphone'
+        );
+        return item;
+      });
+    });
+
+    const result = await Promise.all(promises).then((x) => {
+      return x;
+    });
+
+    return res.json(result);
   }
 
   async SellsDoneByProduct(req, res) {
