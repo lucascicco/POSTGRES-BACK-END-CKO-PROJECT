@@ -7,9 +7,12 @@ The main libraries used:
   <li>EXPRESS</li>
   <li>SEQUELIZE</li>
   <li>REDIS</li>
-  <li>BCRYPTS</li>
+  <li>BCRYTJS</li>
   <li>JSONWEBTOKEN</li>
   <li>NODEMAILER</li>
+  <li>DOTENV</li>
+  <li>DATE-FNS</li>
+  <li>MULTER</li>
 </ul>
 
 As the database used was "POSTGRES-SQL" using the sequelize to migrate the tables.
