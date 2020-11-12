@@ -13,6 +13,8 @@ The main libraries used:
   <li>DOTENV</li>
   <li>DATE-FNS</li>
   <li>MULTER</li>
+  <li>CORS</li>
+  <li>YUP</li>
 </ul>
 
 As the database used was "POSTGRES-SQL" using the sequelize to migrate the tables.
