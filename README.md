@@ -37,5 +37,5 @@ Please, check it out deeply.
 I am open minded about new suggestions.
 Thank you for reading.
 
-Created by Lucas Vitor.
+Created by lucascicco.
 
