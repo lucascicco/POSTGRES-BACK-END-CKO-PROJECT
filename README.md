@@ -23,6 +23,7 @@ Remembering that, if you wanted to run this backend, you need to create an insta
   <li>JEST</li>
 </ul>
 
+<hr/>
 
 ### SCREENSHOOT POSTBIRD DATABASE 
 
