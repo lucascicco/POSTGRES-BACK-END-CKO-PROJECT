@@ -34,9 +34,9 @@ The WEB APP is on this repository:
 
 <hr/>
 
-Please, check it out deeply. 
-I am open minded about new suggestions.
-Thank you for reading.
+Developed by,
 
-Created by lucascicco.
+Desenvolvido por,
+
+lucascicco.
 
