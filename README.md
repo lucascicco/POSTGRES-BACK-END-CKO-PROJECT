@@ -15,6 +15,7 @@ The main libraries used:
   <li>MULTER</li>
   <li>CORS</li>
   <li>YUP</li>
+  <li>JEST</li>
 </ul>
 
 As the database used was "POSTGRES-SQL" using the sequelize to migrate the tables.
