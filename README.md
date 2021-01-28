@@ -6,7 +6,7 @@ Lembrando que, se caso queria rodar essa back-end, é necessário criar uma inst
 <hr/>
 
 Back-end created in Node.js using JavaScript to develop the code. The database used is **POSTGRES-SQL** and sequelize was used to make this connection bridge between the code and the database together with express to create the API's. There are other processes like: image storage by **multer**, authentication by **jsonwebtoken**, simulation of sending e-mail through **nodemailer** and password encryption by **bcrytjs**. There were also series of tests with JEST.
-Remembering that, if you wanted to run this backend, you need to create an instance of postgres-sql on the machine, even if it's through the docker and another one from redis. 
+Remembering that, if you want to run this backend, you need to create an instance of postgres-sql on the machine, even if it's through the docker and another one from redis. 
 
 <ul>
   <li>EXPRESS</li>
